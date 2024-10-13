@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+        <h1>Welcome, {{ request.user.username }}</h1>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'post_list' %}">View All Posts</a></li>
+            <li><a href="{% url 'post_create' %}">Create New Post</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <h2>Search for a Post</h2>
+        <form action="{% url 'search' %}" method="get" class="search-form">
+            <input type="search" name="searched" placeholder="Search..." aria-label="Search posts" required>
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+{% endblock content %}

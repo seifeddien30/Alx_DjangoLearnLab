@@ -1,0 +1,38 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div style="margin: 20px;">
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p><strong>Author:</strong> {{ post.author }}</p>
+    <p><strong>Posted on:</strong> {{ post.created_at|date:"Y-m-d H:i" }}</p>
+    <a href="{%url 'post_update' post.pk %}">Update Post</a>
+    <a href="{%url 'post_delete' post.pk %}">Delete Post</a>
+    <br><br>
+
+<section class="comments">
+        <h2>Comments</h2>
+        {% for comment in comments %}
+        <div class="comment">
+            <strong>{{ comment.author.username }} Commented:</strong>
+            <p>{{ comment.content }}</p>
+            <p>Posted on: {{ comment.created_at|date:"M d, P" }}</p>
+            <p>Last Update: {{ comment.updated_at|date:"M d, P" }}</p>
+            {% if comment.author == request.user %}
+                <a href="{% url 'comment_update' pk=comment.pk %}">Update Comment</a>
+                <a href="{% url 'comment_delete' pk=comment.pk %}">Delete comment</a>
+            {% endif %}
+            <br><br>
+        </div>
+        {% empty %}
+        <p>No comments yet.</p>
+        {% endfor %}
+    </section>
+
+<form action="{% url 'comment_create' post.pk %}" method="post">
+    {%csrf_token%}
+    {{comment_form.as_p}}
+    <button type="submit">Add Comment</button>
+</form>
+</div>
+{% endblock content %}
